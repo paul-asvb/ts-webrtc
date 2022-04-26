@@ -1,17 +1,30 @@
-const button = document.getElementById('button');
-button.addEventListener('click', createConnection);
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', createConnection);
+
+var offerButton = document.getElementById('offerButton');
+offerButton.addEventListener('click', offer);
 
 let peerConnection;
 
+const config = {
+  iceServers: [{
+    urls: 'stun:stun1.l.google.com:19302'
+  }]
+};
+
 async function createConnection() {
   console.log('Create RTCPeerConnection');
-  const configuration = {};
-  peerConnection = new RTCPeerConnection(configuration);
+  peerConnection = new RTCPeerConnection(config);
   peerConnection.addEventListener('icecandidate', e => onIceCandidate(peerConnection, e));
   peerConnection.addEventListener('iceconnectionstatechange', e => onIceStateChange(peerConnection, e));
-  peerConnection.addEventListener('ondatachannel', e => onDataChannel(peerConnection, e));
+
+  const sendChannel = peerConnection.createDataChannel("sendChannel");
+  sendChannel.onmessage = e => console.log("messsage received!!!" + e.data)
+  sendChannel.onopen = e => console.log("open!!!!");
+  sendChannel.onclose = e => console.log("closed!!!!!!");
+
   try {
-    const offer = await peerConnection.createOffer({});
+    const offer = await peerConnection.createOffer();
     await onCreateOfferSuccess(offer);
   } catch (e) {
     console.log(`Failed to create session description: ${e.toString()}`);
@@ -31,6 +44,7 @@ async function onCreateOfferSuccess(desc) {
   console.log('pc1 setLocalDescription start');
   try {
     await peerConnection.setLocalDescription(desc);
+    document.getElementById("offerLocal").value = JSON.stringify(desc);
     console.log(`peerConnection setLocalDescription complete`);
   } catch (e) {
     console.log("pc1 setLocalDescription error", e);
@@ -75,15 +89,30 @@ async function onCreateOfferSuccess(desc) {
 //   }
 // }
 
-async function onIceCandidate(pc, event) {
-  console.log("onIceCandidate0");
+
+async function offer() {
+  console.log("add remote offer");
+  let offer = JSON.parse(document.getElementById("offerRemote").value);
+  console.log(offer);
+
   try {
-    await (getOtherPc(pc).addIceCandidate(event.candidate));
-    console.log(`${getName(pc)} addIceCandidate success`);
+    await peerConnection.setRemoteDescription(offer);
   } catch (e) {
-    console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+    console.log("setRemoteDescription error", e);
+
   }
-  console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+}
+
+
+async function onIceCandidate(pc, event) {
+  console.log("onIceCandidate", pc, event);
+  try {
+    //await peerConnection.addIceCandidate(event.candidate);
+    //console.log(`${getName(pc)} addIceCandidate success`);
+  } catch (e) {
+    console.log(`Failed to add ICE Candidate: ${e.toString()}`);
+  }
+  //console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
 }
 
 function onIceStateChange(pc, event) {
@@ -92,7 +121,6 @@ function onIceStateChange(pc, event) {
     printJSON(pc);
   }
 }
-
 
 function printJSON(obj) {
   console.log(JSON.stringify(obj));
