@@ -40,14 +40,12 @@ function onDataChannel(pc, e) {
 }
 
 async function onCreateOfferSuccess(desc) {
-  console.log(`Create Offer successfully`);
-  console.log('pc1 setLocalDescription start');
   try {
     await peerConnection.setLocalDescription(desc);
     document.getElementById("offerLocal").value = JSON.stringify(desc);
     console.log(`peerConnection setLocalDescription complete`);
   } catch (e) {
-    console.log("pc1 setLocalDescription error", e);
+    console.log("peerConnection setLocalDescription error", e);
   }
 
   // console.log('pc2 setRemoteDescription start');
@@ -97,6 +95,8 @@ async function offer() {
 
   try {
     await peerConnection.setRemoteDescription(offer);
+    const ans = await peerConnection.createAnswer();
+    document.getElementById("offerLocal").value = JSON.stringify(ans);
   } catch (e) {
     console.log("setRemoteDescription error", e);
 
