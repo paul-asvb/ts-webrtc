@@ -105,7 +105,7 @@ async function offer() {
 
 
 async function onIceCandidate(pc, event) {
-  console.log("onIceCandidate", pc, event);
+  console.log("onIceCandidate", pc, event.candidate);
   try {
     //await peerConnection.addIceCandidate(event.candidate);
     //console.log(`${getName(pc)} addIceCandidate success`);

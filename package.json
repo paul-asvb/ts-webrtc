@@ -1,0 +1,26 @@
+{
+  "name": "ts-webrtc",
+  "version": "1.0.0",
+  "description": "```bash npx parcel index.html ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "$(npm bin)/cypress open",
+    "dev": "npx parcel index.html",
+    "ci":"$(npm bin)/concurrently \"npm run dev\" \"npm run test\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paul-asvb/ts-webrtc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paul-asvb/ts-webrtc/issues"
+  },
+  "homepage": "https://github.com/paul-asvb/ts-webrtc#readme",
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "cypress": "^9.6.0"
+  }
+}
