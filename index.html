@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>webRTC test</title>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <title>webRTC test</title>
-</head>
+  <body>
+    <h1>Hello, webRTC!</h1>
 
-<body>
-  <h1>Hello, webRTC!</h1>
-  <textarea id="offerLocal"></textarea>
-  <br />
-  <button id="startButton" data-cy="start">start</button>
-  <hr />
-  <textarea id="offerRemote"></textarea>
-  <br />
+    <h3>local offer</h3>
+    <p id="offerLocal"></p>
+    <br />
+    <button id="startButton" data-cy="create">create local offer</button>
 
-  <button id="offerButton">offer</button>
+    <hr />
+    <h3>remote offer</h3>
+    <textarea id="offerRemote"></textarea>
+    <br />
+    <button id="addOfferRemote">add remote offer</button>
 
+    <hr />
+    <h3>sdps</h3>
+    <p id="sdps"></p>
 
-
-  <script src="index.ts"></script>
-</body>
-
+    <script src="index.ts"></script>
+  </body>
 </html>

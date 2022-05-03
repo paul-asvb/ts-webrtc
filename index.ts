@@ -1,27 +1,37 @@
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', createConnection);
+const startButton = document.getElementById("startButton");
+startButton.addEventListener("click", createConnection);
 
-var offerButton = document.getElementById('offerButton');
-offerButton.addEventListener('click', offer);
+var offerButton = document.getElementById("addOfferRemote");
+offerButton.addEventListener("click", addRemoteOffer);
 
 let peerConnection;
 
 const config = {
-  iceServers: [{
-    urls: 'stun:stun1.l.google.com:19302'
-  }]
+  iceServers: [
+    {
+      urls: "stun:stun1.l.google.com:19302",
+    },
+  ],
 };
 
 async function createConnection() {
-  console.log('Create RTCPeerConnection');
+  console.log("Create RTCPeerConnection");
   peerConnection = new RTCPeerConnection(config);
-  peerConnection.addEventListener('icecandidate', e => onIceCandidate(peerConnection, e));
-  peerConnection.addEventListener('iceconnectionstatechange', e => onIceStateChange(peerConnection, e));
+
+  peerConnection.addEventListener("icecandidate", (e) =>
+    onIceCandidate(peerConnection, e)
+  );
+  peerConnection.addEventListener("iceconnectionstatechange", (e) =>
+    onIceStateChange(peerConnection, e)
+  );
 
   const sendChannel = peerConnection.createDataChannel("sendChannel");
-  sendChannel.onmessage = e => console.log("messsage received!!!" + e.data)
-  sendChannel.onopen = e => console.log("open!!!!");
-  sendChannel.onclose = e => console.log("closed!!!!!!");
+  sendChannel.onmessage = (e) => console.log("messsage received!!!" + e.data);
+  sendChannel.onopen = (e) => console.log("open!!!!");
+  sendChannel.onclose = (e) => console.log("closed!!!!!!");
+
+  peerConnection.ondatachannel = (peerConnection, e) =>
+    onDataChannel(peerConnection, e);
 
   try {
     const offer = await peerConnection.createOffer();
@@ -33,17 +43,17 @@ async function createConnection() {
 
 function onDataChannel(pc, e) {
   const receiveChannel = e.channel;
-  receiveChannel.onmessage = e => console.log("messsage received!!!" + e.data)
-  receiveChannel.onopen = e => console.log("open!!!!");
-  receiveChannel.onclose = e => console.log("closed!!!!!!");
+  receiveChannel.onmessage = (e) =>
+    console.log("messsage received!!!" + e.data);
+  receiveChannel.onopen = (e) => console.log("open!!!!");
+  receiveChannel.onclose = (e) => console.log("closed!!!!!!");
   pc.channel = receiveChannel;
 }
 
 async function onCreateOfferSuccess(desc) {
   try {
     await peerConnection.setLocalDescription(desc);
-    document.getElementById("offerLocal").value = JSON.stringify(desc);
-    console.log(`peerConnection setLocalDescription complete`);
+    document.getElementById("offerLocal").innerHTML = JSON.stringify(desc);
   } catch (e) {
     console.log("peerConnection setLocalDescription error", e);
   }
@@ -87,8 +97,7 @@ async function onCreateOfferSuccess(desc) {
 //   }
 // }
 
-
-async function offer() {
+async function addRemoteOffer() {
   console.log("add remote offer");
   let offer = JSON.parse(document.getElementById("offerRemote").value);
   console.log(offer);
@@ -96,28 +105,30 @@ async function offer() {
   try {
     await peerConnection.setRemoteDescription(offer);
     const ans = await peerConnection.createAnswer();
-    document.getElementById("offerLocal").value = JSON.stringify(ans);
+    peerConnection.setLocalDescription(ans);
   } catch (e) {
     console.log("setRemoteDescription error", e);
-
   }
 }
 
-
 async function onIceCandidate(pc, event) {
-  console.log("onIceCandidate", pc, event.candidate);
-  try {
-    //await peerConnection.addIceCandidate(event.candidate);
-    //console.log(`${getName(pc)} addIceCandidate success`);
-  } catch (e) {
-    console.log(`Failed to add ICE Candidate: ${e.toString()}`);
-  }
+  console.log("onIceCandidate"); //, pc, event.candidate);
+  document.getElementById("sdps").innerHTML = JSON.stringify(
+    peerConnection.localDescription
+  );
+
+  // try {
+  //   //await peerConnection.addIceCandidate(event.candidate);
+  //   //console.log(`${getName(pc)} addIceCandidate success`);
+  // } catch (e) {
+  //   console.log(`Failed to add ICE Candidate: ${e.toString()}`);
+  // }
   //console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
 }
 
 function onIceStateChange(pc, event) {
   if (pc) {
-    console.log('ICE state change event: ', event);
+    console.log("ICE state change event: ", event);
     printJSON(pc);
   }
 }
