@@ -136,3 +136,7 @@ function onIceStateChange(pc, event) {
 function printJSON(obj) {
   console.log(JSON.stringify(obj));
 }
+
+// fetch("https://webrtc-session.paul-asvb.workers.dev")
+//   .then((response) => response.json())
+//   .then((data) => console.log(data));
