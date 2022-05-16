@@ -1,8 +1,0 @@
-{
-  "/api": {
-    "target": "https://webrtc-session.paul-asvb.workers.dev",
-    "pathRewrite": {
-      "^/api": ""
-    }
-  }
-}
