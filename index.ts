@@ -4,6 +4,9 @@ startButton.addEventListener("click", createConnection);
 var offerButton = document.getElementById("addOfferRemote");
 offerButton.addEventListener("click", addRemoteOffer);
 
+var offerButton = document.getElementById("loadSessions");
+offerButton.addEventListener("click", loadSessions);
+
 let peerConnection;
 
 const config = {
@@ -97,6 +100,13 @@ async function onCreateOfferSuccess(desc) {
 //   }
 // }
 
+async function loadSessions() {
+  let res = await fetch("https://webrtc-session.paul-asvb.workers.dev", {
+    mode: "no-cors", // 'cors' by default
+  }).then(r=>r.json())
+  console.log(res);
+}
+
 async function addRemoteOffer() {
   console.log("add remote offer");
   let offer = JSON.parse(document.getElementById("offerRemote").value);
@@ -136,9 +146,3 @@ function onIceStateChange(pc, event) {
 function printJSON(obj) {
   console.log(JSON.stringify(obj));
 }
-
-fetch("https://webrtc-session.paul-asvb.workers.dev", {
-  mode: "no-cors", // 'cors' by default
-})
-  .then((response) => response.json())
-  .then((data) => console.log(data));

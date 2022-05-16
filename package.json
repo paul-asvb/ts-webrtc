@@ -4,7 +4,7 @@
   "description": "```bash npx parcel index.html ```",
   "source": "index.html",
   "scripts": {
-    "start": "npm run dev --https",
+    "start": "npm run dev",
     "test": "$(npm bin)/cypress open",
     "dev": "$(npm bin)/parcel index.html",
     "build": "$(npm bin)/parcel build",

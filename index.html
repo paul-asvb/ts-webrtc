@@ -5,21 +5,27 @@
     <title>webRTC test</title>
   </head>
 
-  <body>
+  <body style="background-color: darkslategrey;">
     <h1>Hello, webRTC!</h1>
+
+    <h3>sessions</h3>
+    <p id="sessions"></p>
+    <br />
+    <button id="loadSessions" data-cy="create">load sessions</button>
+    <hr />
 
     <h3>local offer</h3>
     <p id="offerLocal"></p>
     <br />
     <button id="startButton" data-cy="create">create local offer</button>
-
     <hr />
+
     <h3>remote offer</h3>
     <textarea id="offerRemote"></textarea>
     <br />
     <button id="addOfferRemote">add remote offer</button>
-
     <hr />
+
     <h3>sdps</h3>
     <p id="sdps"></p>
 
