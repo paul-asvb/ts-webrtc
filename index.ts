@@ -101,10 +101,9 @@ async function onCreateOfferSuccess(desc) {
 // }
 
 async function loadSessions() {
-  let res = await fetch("https://webrtc-session.paul-asvb.workers.dev", {
-    mode: "no-cors", // 'cors' by default
-  }).then((r) => r.text());
-  console.log(res);
+  await fetch("https://webrtc-session.paul-asvb.workers.dev", {
+    mode: "cors-with-forced-preflight",
+  }).then((r) => r.json());
 }
 
 async function addRemoteOffer() {
