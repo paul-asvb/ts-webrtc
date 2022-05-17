@@ -103,7 +103,7 @@ async function onCreateOfferSuccess(desc) {
 async function loadSessions() {
   let res = await fetch("https://webrtc-session.paul-asvb.workers.dev", {
     mode: "no-cors", // 'cors' by default
-  }).then(r=>r.json())
+  }).then((r) => r.text());
   console.log(res);
 }
 
