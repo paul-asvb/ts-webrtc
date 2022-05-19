@@ -7,6 +7,9 @@ offerButton.addEventListener("click", addRemoteOffer);
 var offerButton = document.getElementById("loadSessions");
 offerButton.addEventListener("click", loadSessions);
 
+var offerButton = document.getElementById("clearSessions");
+offerButton.addEventListener("click", clearSessions);
+
 let peerConnection;
 
 const config = {
@@ -101,9 +104,19 @@ async function onCreateOfferSuccess(desc) {
 // }
 
 async function loadSessions() {
+  let sessions = await fetch(
+    "https://webrtc-session.paul-asvb.workers.dev"
+  ).then((r) => r.json());
+
+  document.getElementById("sessions").innerHTML = JSON.stringify(sessions);
+}
+
+async function clearSessions() {
+  
   await fetch("https://webrtc-session.paul-asvb.workers.dev", {
-    mode: "cors-with-forced-preflight",
-  }).then((r) => r.json());
+    method: "DELETE",
+  }).catch(console.log);
+  loadSessions();
 }
 
 async function addRemoteOffer() {
