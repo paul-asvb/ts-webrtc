@@ -7,6 +7,18 @@ npx parcel index.html
 ## Example in JS
 https://github.com/hnasr/javascript_playground/tree/master/webrtc
 
+```mermaid
+sequenceDiagram
+    peer1->>+peer1: create offer1
+    peer1->>+server: push offer1
+    peer1->>+peer2: share id
+    server->>+peer2: pull offer1
+    peer2->>+peer2: create offer2 from offer1
+    peer2->>+server: push offer2
+    peer1->>+server: pull offer2
+    peer1->>+peer2: create connection from offer2
+```
+
 ## summary
 
 A wants to connect to B

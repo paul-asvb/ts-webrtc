@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>webRTC test</title>
-  </head>
 
-  <body style="background-color: darkslategrey;">
-    <h1>Hello, webRTC!</h1>
+<head>
+  <meta charset="utf-8" />
+  <title>webRTC test</title>
+</head>
 
-    <h3>sessions</h3>
-    <p id="sessions"></p>
-    <br />
-    <button id="loadSessions" data-cy="create">load sessions</button>
-    <button id="clearSessions" data-cy="create">clear sessions</button>
-    <hr />
+<body style="background-color: darkslategrey;">
+  <h1>Hello, webRTC!</h1>
 
-    <h3>local offer</h3>
-    <p id="offerLocal"></p>
-    <br />
-    <button id="startButton" data-cy="create">create local offer</button>
-    <hr />
+  <h3>local offer</h3>
+  <p id="offerLocal"></p>
+  <br />
+  <button id="startButton" data-cy="create">create local offer</button>
+  <button id="pushOffer" data-cy="create">push local offer</button>
+  <hr />
 
-    <h3>remote offer</h3>
-    <textarea id="offerRemote"></textarea>
-    <br />
-    <button id="addOfferRemote">add remote offer</button>
-    <hr />
+  <h3>sessions</h3>
+  <p id="sessions"></p>
+  <br />
+  <button id="loadSessions" data-cy="create">load sessions</button>
+  <button id="clearSessions" data-cy="create">clear sessions</button>
+  <hr />
 
-    <h3>sdps</h3>
-    <p id="sdps"></p>
 
-    <script src="index.ts"></script>
-  </body>
+
+  <h3>remote offer</h3>
+  <textarea id="offerRemote"></textarea>
+  <br />
+  <button id="addOfferRemote">add remote offer</button>
+  <hr />
+
+  <h3>sdps</h3>
+  <p id="sdps"></p>
+
+  <script src="index.ts"></script>
+</body>
+
 </html>
