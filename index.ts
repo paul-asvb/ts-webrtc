@@ -10,7 +10,11 @@ offerButton.addEventListener("click", loadSessions);
 var offerButton = document.getElementById("clearSessions");
 offerButton.addEventListener("click", clearSessions);
 
+var offerButton = document.getElementById("pushOffer");
+offerButton.addEventListener("click", pushOffer);
+
 let peerConnection;
+let clipboard = null;
 
 const config = {
   iceServers: [
@@ -59,6 +63,7 @@ function onDataChannel(pc, e) {
 async function onCreateOfferSuccess(desc) {
   try {
     await peerConnection.setLocalDescription(desc);
+    clipboard = desc;
     document.getElementById("offerLocal").innerHTML = JSON.stringify(desc);
   } catch (e) {
     console.log("peerConnection setLocalDescription error", e);
@@ -111,8 +116,20 @@ async function loadSessions() {
   document.getElementById("sessions").innerHTML = JSON.stringify(sessions);
 }
 
+async function pushOffer() {
+  console.log(clipboard);
+  let session = {
+    peer_id: makeid(8),
+    offer: clipboard,
+  };
+  await fetch("https://webrtc-session.paul-asvb.workers.dev/create", {
+    method: "POST",
+    body: JSON.stringify(session),
+  });
+  loadSessions();
+}
+
 async function clearSessions() {
-  
   await fetch("https://webrtc-session.paul-asvb.workers.dev", {
     method: "DELETE",
   }).catch(console.log);
@@ -157,4 +174,15 @@ function onIceStateChange(pc, event) {
 
 function printJSON(obj) {
   console.log(JSON.stringify(obj));
+}
+
+function makeid(length) {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
