@@ -13,6 +13,7 @@ offerButton.addEventListener("click", clearSessions);
 var offerButton = document.getElementById("pushOffer");
 offerButton.addEventListener("click", pushOffer);
 
+document.getElementById("id").innerHTML = "peer_" + makeid(4);
 let peerConnection;
 let clipboard = null;
 
@@ -117,9 +118,9 @@ async function loadSessions() {
 }
 
 async function pushOffer() {
-  console.log(clipboard);
+  let id = document.getElementById("id").textContent;
   let session = {
-    peer_id: makeid(8),
+    peer_id: id,
     offer: clipboard,
   };
   await fetch("https://webrtc-session.paul-asvb.workers.dev/create", {
