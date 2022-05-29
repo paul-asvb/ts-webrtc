@@ -1,3 +1,4 @@
+<script setup lang="ts">
 const startButton = document.getElementById("startButton");
 startButton.addEventListener("click", createConnection);
 
@@ -13,8 +14,8 @@ offerButton.addEventListener("click", clearSessions);
 var offerButton = document.getElementById("pushOffer");
 offerButton.addEventListener("click", pushOffer);
 
-document.getElementById("id").innerHTML = "peer_" + makeid(4);
-document.getElementById("sessionId").innerHTML = "peer_" + makeid(4);
+document.getElementById("peerId").innerHTML = "peer_" + makeid(4);
+document.getElementById("sessionId").innerHTML = "session_" + makeid(4);
 let peerConnection;
 let clipboard = null;
 
@@ -119,7 +120,7 @@ async function loadSessions() {
 }
 
 async function pushOffer() {
-  let id = document.getElementById("id").textContent;
+  let id = document.getElementById("peerId").textContent;
   let session = {
     peer_id: id,
     offer: clipboard,
@@ -188,3 +189,39 @@ function makeid(length) {
   }
   return result;
 }
+</script>
+
+<template>
+  <main>
+    <h1>Hello, webRTC!</h1>
+    <h2>id: not defined</h2>
+    <h2>session</h3>
+    <textarea id="sessionId"></textarea>
+    <hr />
+
+    <h3>local offer</h3>
+    <p id="offerLocal"></p>
+    <br />
+    <button id="startButton" data-cy="create">create local offer</button>
+    <button id="pushOffer" data-cy="create">push local offer</button>
+    <hr />
+
+    <h3>sessions</h3>
+    <p id="sessions"></p>
+    <br />
+    <button id="loadSessions" data-cy="create">load sessions</button>
+    <button id="clearSessions" data-cy="create">clear sessions</button>
+    <hr />
+
+
+
+    <h3>remote offer</h3>
+    <textarea id="offerRemote"></textarea>
+    <br />
+    <button id="addOfferRemote">add remote offer</button>
+    <hr />
+
+    <h3>sdps</h3>
+    <p id="sdps"></p>
+  </main>
+</template>
