@@ -5,10 +5,8 @@
   "source": "index.html",
   "scripts": {
     "start": "npm run dev",
-    "test": "$(npm bin)/cypress open",
     "dev": "$(npm bin)/parcel index.html",
-    "build": "$(npm bin)/parcel build",
-    "dev-test": "$(npm bin)/concurrently \"npm run dev\" \"npm run test\""
+    "build": "$(npm bin)/parcel build"
   },
   "repository": {
     "type": "git",
@@ -21,8 +19,6 @@
   },
   "homepage": "https://github.com/paul-asvb/ts-webrtc#readme",
   "devDependencies": {
-    "concurrently": "^7.1.0",
-    "cypress": "^9.6.0",
     "parcel": "^2.5.0"
   }
 }
