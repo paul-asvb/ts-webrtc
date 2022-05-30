@@ -1,7 +1,8 @@
 # dev
 
 ```bash
-npx parcel index.html
+npm i
+npm start
 ```
 
 ## Example in JS
@@ -26,3 +27,7 @@ A creates an "offer", it finds all ICE candidates, security options, audio/video
 A signals the offer somehow to B (server todo)
 B creates the "answer" after setting A's offer
 B signals the "answer" to A
+
+
+## bookmarks
+https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-disruptive

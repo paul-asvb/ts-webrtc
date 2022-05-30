@@ -16,7 +16,7 @@ function makeid(length: number) {
 
 export const useSessionStore = defineStore('session', {
     state: () => {
-        return { session_id: "session_" + makeid(4), peer_id: "peer_" + makeid(4) }
+        return { session_id: "session_" + makeid(4), peer_id: "peer_" + makeid(4), local_offer: "" }
     },
 
     actions: {
