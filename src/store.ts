@@ -16,15 +16,34 @@ function makeid(length: number) {
 
 export const useSessionStore = defineStore('session', {
     state: () => {
-        return { session_id: "session_" + makeid(4), peer_id: "peer_" + makeid(4), local_offer: "" }
+        return { session_id: "session_" + makeid(4), peer_id: "peer_" + makeid(4), local_offer: {}, sessions: [], loading: false }
     },
-
     actions: {
-        set_session_id(session_id) {
-            session_id
+        async loadSessions() {
+            this.loading = true;
+            try {
+                this.sessions = await fetch(
+                    "https://webrtc-session.paul-asvb.workers.dev"
+                ).then((r) => r.json());
+            } catch (error) {
+                console.log(error)
+            }
+            this.loading = false;
+
         },
-        set_peer_id(peer_id) {
-            peer_id
-        },
+
+        async deleteSessions(id: String) {
+            this.loading = true;
+            try {
+                await fetch("https://webrtc-session.paul-asvb.workers.dev/" + id, {
+                    method: "DELETE",
+                })
+                this.loadSessions();
+            } catch (error) {
+                console.log(error)
+            }
+            this.loading = false;
+        }
+
     },
 })

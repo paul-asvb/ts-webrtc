@@ -63,14 +63,14 @@ function onDataChannel(pc, e) {
   pc.channel = receiveChannel;
 }
 
-async function onCreateOfferSuccess(desc) {
-  try {
-    await peerConnection.setLocalDescription(desc);
-    clipboard = desc;
-    document.getElementById("offerLocal").innerHTML = JSON.stringify(desc);
-  } catch (e) {
-    console.log("peerConnection setLocalDescription error", e);
-  }
+// async function onCreateOfferSuccess(desc) {
+//   try {
+//     await peerConnection.setLocalDescription(desc);
+//     clipboard = desc;
+//     document.getElementById("offerLocal").innerHTML = JSON.stringify(desc);
+//   } catch (e) {
+//     console.log("peerConnection setLocalDescription error", e);
+//   }
 
   // console.log('pc2 setRemoteDescription start');
   // try {
@@ -91,7 +91,6 @@ async function onCreateOfferSuccess(desc) {
   // } catch (e) {
   //   console.log(`createAnswer: ${e.toString()}`);
   // }
-}
 
 // async function onCreateAnswerSuccess(desc) {
 //   console.log(`Answer from pc2:\n${desc.sdp}`);

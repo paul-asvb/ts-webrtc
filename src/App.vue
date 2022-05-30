@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
 import { useSessionStore } from "./store";
 import LocalOffer from "./LocalOffer.vue"
-
+import SessionList from "./SessionList.vue"
 const session = useSessionStore();
-
-// lifecycle hooks
-onMounted(() => {
-  console.log(`mounted`);
-});
 </script>
 <template>
   <main>
@@ -18,5 +12,6 @@ onMounted(() => {
 
     <input :value="session.session_id" @input="(event) => session.$patch({ session_id: event.target.value })" />
     <LocalOffer />
+    <SessionList />
   </main>
 </template>

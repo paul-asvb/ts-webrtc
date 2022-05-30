@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useSessionStore } from "./store";
-
 const session = useSessionStore();
+const push_sessions = ref(false);
 
-const createOffer = () => {
-  console.log("oofer")
-};
+async function pushOffer() {
+  push_sessions.value = true
+  let s = {
+    peer_id: session.peer_id,
+    offer: session.local_offer,
+  };
+  await fetch("https://webrtc-session.paul-asvb.workers.dev/" + session.session_id, {
+    method: "POST",
+    body: JSON.stringify(s),
+  }).catch(console.log);
+  push_sessions.value = false
+}
 
-// lifecycle hooks
-onMounted(() => {
-  console.log(`mounted`);
-});
+
 </script>
 <template>
   <hr />
   <h3>local offer</h3>
-  <p id="offerLocal"></p>
-  <br />
-  <button  @click="createOffer">create local offer</button>
-  <button id="pushOffer" data-cy="create">push local offer</button>
+  <p>{{ JSON.stringify(session.local_offer) }}</p>
+  <button type="button" @click="pushOffer">{{ !push_sessions ? "push offer" : "🔄" }}</button>
   <hr />
 </template>
