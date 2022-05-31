@@ -2,6 +2,7 @@
 import { useSessionStore } from "./store";
 import LocalOffer from "./LocalOffer.vue"
 import SessionList from "./SessionList.vue"
+import PeerList from "./PeerList.vue"
 const session = useSessionStore();
 </script>
 <template>
@@ -13,5 +14,6 @@ const session = useSessionStore();
     <input :value="session.session_id" @input="(event) => session.$patch({ session_id: event.target.value })" />
     <LocalOffer />
     <SessionList />
+    <PeerList />
   </main>
 </template>

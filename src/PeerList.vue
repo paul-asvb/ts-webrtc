@@ -2,9 +2,14 @@
 import { ref } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
+
+session.$subscribe((mutation, state) => {
+  console.log(mutation);
+  console.log(state);
+});
 </script>
 <template>
-  <h3>sessions</h3>
+  <h3>Peers</h3>
   <button type="button" @click="session.loadSessions">
     {{ !session.loading ? "load sessions" : "🔄" }}
   </button>
@@ -23,7 +28,7 @@ const session = useSessionStore();
       </td>
       <td>
         <button type="button" @click="session.deleteSessions(l.name)">
-         🗑️
+          🗑️
         </button>
       </td>
     </tr>
