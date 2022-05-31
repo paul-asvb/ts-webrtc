@@ -16,7 +16,7 @@ function makeid(length: number) {
 
 export const useSessionStore = defineStore('session', {
     state: () => {
-        return { session_id: "session_" + makeid(4), peer_id: "peer_" + makeid(4), local_offer: {}, sessions: [], loading: false }
+        return { session_id: makeid(4) + "_s", peer_id: makeid(4) + "_p", local_offer: {}, sessions: [], peers: [], loading: false }
     },
     getters: {
         id: (state) => state.session_id,
@@ -48,11 +48,11 @@ export const useSessionStore = defineStore('session', {
             this.loading = false;
         },
 
-        async loadPeers() {
+        async loadPeers(session_id) {
             this.loading = true;
             try {
-                const peers = await fetch("https://webrtc-session.paul-asvb.workers.dev/" + this.session_id)
-                console.log("pers", peers);
+                const peers = await fetch("https://webrtc-session.paul-asvb.workers.dev/" + session_id).then(r => r.json())
+                this.peers = peers;
             } catch (error) {
                 console.log(error)
             }

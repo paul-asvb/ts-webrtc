@@ -18,7 +18,7 @@ const session = useSessionStore();
       <td>{{ l.name }}</td>
       <td>
         <button type="button" @click="session.$patch({ session_id: l.name })">
-          set
+          load peers
         </button>
       </td>
       <td>

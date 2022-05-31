@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
 
-session.$subscribe((mutation, state) => {
-  console.log(mutation);
-  console.log(state);
-});
+watch(
+  () => session.id,
+  (session_id, _) => {
+    session.loadPeers(session_id);
+  }
+);
 </script>
 <template>
   <h3>Peers</h3>
@@ -17,18 +19,12 @@ session.$subscribe((mutation, state) => {
     <tr>
       <th>session id</th>
       <th>load</th>
-      <th>delete</th>
     </tr>
-    <tr v-for="l in session.sessions">
-      <td>{{ l.name }}</td>
+    <tr v-for="l in session.peers">
+      <td>{{ l.peer_id }}</td>
       <td>
         <button type="button" @click="session.$patch({ session_id: l.name })">
-          set
-        </button>
-      </td>
-      <td>
-        <button type="button" @click="session.deleteSessions(l.name)">
-          🗑️
+          {{ JSON.stringify(l.offer) }}
         </button>
       </td>
     </tr>
