@@ -6,7 +6,7 @@ const config = {
     ],
 };
 
-export default async function createWebRTC(session: any) {
+export default function createWebRTC() {
 
     let peerConnection = new RTCPeerConnection(config);
 
@@ -28,11 +28,5 @@ export default async function createWebRTC(session: any) {
     peerConnection.ondatachannel = (e) =>
         console.log(e);
 
-    try {
-        const offer = await peerConnection.createOffer();
-        session.$patch({ local_offer: offer })
-    } catch (e) {
-        console.log(`Failed to create session description: ${e.toString()}`);
-    }
-
-}
+    return peerConnection;
+}   

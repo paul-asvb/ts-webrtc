@@ -7,8 +7,3 @@ import { useSessionStore } from './store'
 const pinia = createPinia()
 
 createApp(App).use(pinia).mount('#app')
-
-const session = useSessionStore();
-createWebRTC(session);
-
-

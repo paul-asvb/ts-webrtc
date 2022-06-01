@@ -13,8 +13,8 @@ const session = useSessionStore();
     <tr v-for="l in session.peers">
       <td>{{ l.peer_id }}</td>
       <td>
-        <button type="button" @click="session.$patch({ session_id: l.name })">
-          {{ JSON.stringify(l.offer) }}
+        <button type="button" @click="session.loadRemoteOffer(l.offer)">
+          load as remote
         </button>
       </td>
     </tr>

@@ -31,3 +31,4 @@ B signals the "answer" to A
 
 ## bookmarks
 https://www.html5rocks.com/en/tutorials/webrtc/basics/#toc-disruptive
+https://rustwasm.github.io/wasm-bindgen/examples/webrtc_datachannel.html

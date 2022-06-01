@@ -2,9 +2,11 @@
 import { ref } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
+session.createOffer();
 const push_sessions = ref(false);
 
 async function pushOffer() {
+  console.log(session);
   push_sessions.value = true
   let s = {
     peer_id: session.peer_id,
@@ -16,7 +18,6 @@ async function pushOffer() {
   }).catch(console.log);
   push_sessions.value = false
 }
-
 
 </script>
 <template>

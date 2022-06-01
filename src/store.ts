@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import createWebRTC from './rtc';
 
 
 
@@ -20,12 +21,21 @@ function ranNum() {
 
 export const useSessionStore = defineStore('session', {
     state: () => {
-        return { session_id: "ses" + ranNum(), peer_id: "p" + makeid(4), local_offer: {}, sessions: [], peers: [], loading: false }
+        return { session_id: "ses" + ranNum(), peer_id: "p" + makeid(4), local_offer: "", peer_conn: createWebRTC(), sessions: [], peers: [], loading: false }
     },
     getters: {
         id: (state) => state.session_id,
+
     },
     actions: {
+        async createOffer() {
+            this.local_offer = await this.peer_conn.createOffer();
+        },
+        async loadRemoteOffer(offer) {
+            await this.peer_conn.setRemoteDescription(offer);
+            this.local_offer = await this.peer_conn.createAnswer();
+
+        },
         async loadSessions() {
             this.loading = true;
             try {
@@ -38,7 +48,6 @@ export const useSessionStore = defineStore('session', {
             this.loading = false;
 
         },
-
         async deleteSessions(id: String) {
             this.loading = true;
             try {
@@ -51,7 +60,6 @@ export const useSessionStore = defineStore('session', {
             }
             this.loading = false;
         },
-
         useSession(session_id) {
             console.log("use sessisons");
             this.loadPeers(session_id);
