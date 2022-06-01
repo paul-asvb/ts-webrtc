@@ -2,19 +2,9 @@
 import { ref, watch } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
-
-watch(
-  () => session.id,
-  (session_id, _) => {
-    session.loadPeers(session_id);
-  }
-);
 </script>
 <template>
-  <h3>Peers</h3>
-  <button type="button" @click="session.loadSessions">
-    {{ !session.loading ? "load sessions" : "🔄" }}
-  </button>
+  <h3>peers</h3>
   <table>
     <tr>
       <th>session id</th>

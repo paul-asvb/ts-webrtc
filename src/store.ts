@@ -13,10 +13,14 @@ function makeid(length: number) {
     return result;
 }
 
+function ranNum() {
+    return Math.floor(Math.random() * 1000)
+}
+
 
 export const useSessionStore = defineStore('session', {
     state: () => {
-        return { session_id: makeid(4) + "_s", peer_id: makeid(4) + "_p", local_offer: {}, sessions: [], peers: [], loading: false }
+        return { session_id: "ses" + ranNum(), peer_id: "p" + makeid(4), local_offer: {}, sessions: [], peers: [], loading: false }
     },
     getters: {
         id: (state) => state.session_id,
@@ -48,6 +52,10 @@ export const useSessionStore = defineStore('session', {
             this.loading = false;
         },
 
+        useSession(session_id) {
+            console.log("use sessisons");
+            this.loadPeers(session_id);
+        },
         async loadPeers(session_id) {
             this.loading = true;
             try {

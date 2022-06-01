@@ -14,6 +14,6 @@ const session = useSessionStore();
     <input :value="session.session_id" @input="(event) => session.$patch({ session_id: event.target.value })" />
     <LocalOffer />
     <SessionList />
-    <PeerList />
+    <PeerList v-if="session.peers.length > 0" />
   </main>
 </template>
