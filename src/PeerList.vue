@@ -10,10 +10,10 @@ const session = useSessionStore();
       <th>session id</th>
       <th>load</th>
     </tr>
-    <tr v-for="l in session.peers">
-      <td>{{ l.peer_id }}</td>
+    <tr v-for="peer in session.peers">
+      <td>{{ peer.peer_id }}</td>
       <td>
-        <button type="button" @click="session.loadRemoteOffer(l.offer)">
+        <button type="button" @click="session.loadRemoteOffer(peer.offer)">
           load as remote
         </button>
       </td>

@@ -13,7 +13,7 @@ const session = useSessionStore();
 
     <input
       :value="session.session_id"
-      @input="(event) => session.$patch({ session_id: event.target.value })"
+      @input="(event) => session.$patch({ session_id: (event.target as HTMLInputElement).value })"
     />
     <LocalOffer />
     <SessionList />
