@@ -35,13 +35,21 @@ function ranNum() {
   return Math.floor(Math.random() * 1000);
 }
 
+const config = {
+  iceServers: [
+    {
+      urls: "stun:stun1.l.google.com:19302",
+    },
+  ],
+};
+
 export const useSessionStore = defineStore("session", {
   state: () =>
     ({
       session_id: "ses" + ranNum(),
       peer_id: "p" + makeid(4),
       local_offer: "",
-      peer_conn: createWebRTC(),
+      peer_conn: new RTCPeerConnection(config),
       sessions: [],
       peers: [],
       loading: false,
@@ -51,6 +59,14 @@ export const useSessionStore = defineStore("session", {
   },
   actions: {
     async createOffer() {
+      this.peer_conn.addEventListener("icecandidate", (e) => {
+        this.local_offer = this.peer_conn.localDescription;
+      });
+
+      this.peer_conn.addEventListener("iceconnectionstatechange", (e) => {
+        //onIceStateChan console.log(e);ge(peerConnection, e)
+        console.log(e);
+      });
       this.local_offer = await this.peer_conn.createOffer();
       this.peer_conn.setLocalDescription(this.local_offer);
     },
