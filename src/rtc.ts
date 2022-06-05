@@ -21,8 +21,8 @@ export default function createWebRTC() {
 
   const sendChannel = peerConnection.createDataChannel("sendChannel");
   sendChannel.onmessage = (e) => console.log("messsage received!!!" + e.data);
-  sendChannel.onopen = (e) => console.log("open!!!!");
-  sendChannel.onclose = (e) => console.log("closed!!!!!!");
+  sendChannel.onopen = (e) => console.log("open-> " + e);
+  sendChannel.onclose = (e) => console.log("closed-> " + e);
 
   peerConnection.ondatachannel = (e) => console.log(e);
 
