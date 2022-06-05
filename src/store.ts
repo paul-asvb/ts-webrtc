@@ -52,6 +52,7 @@ export const useSessionStore = defineStore("session", {
   actions: {
     async createOffer() {
       this.local_offer = await this.peer_conn.createOffer();
+      this.peer_conn.setLocalDescription(this.local_offer);
     },
     async loadRemoteOffer(offer: RTCSessionDescriptionInit) {
       await this.peer_conn.setRemoteDescription(offer);
