@@ -10,7 +10,6 @@ const session = useSessionStore();
   </button>
   <div v-if="session.sessions.length == 0">no sessions</div>
   <div v-else>
-
     <table>
       <tr>
         <th>session id</th>
@@ -31,8 +30,6 @@ const session = useSessionStore();
           </button>
         </td>
       </tr>
-
     </table>
   </div>
-
 </template>

@@ -2,17 +2,17 @@ import { defineStore } from "pinia";
 import createWebRTC from "./rtc";
 
 export type Session = {
-  name: String;
+  name: string;
 };
 
 export type Peer = {
-  peer_id: String;
+  peer_id: string;
   offer: RTCSessionDescriptionInit;
 };
 
 export type RootState = {
-  session_id: String;
-  peer_id: String;
+  session_id: string;
+  peer_id: string;
   local_offer: RTCLocalSessionDescriptionInit;
   peer_conn: RTCPeerConnection;
   sessions: Session[];
@@ -21,11 +21,11 @@ export type RootState = {
 };
 
 function makeid(length: number) {
-  var result = "";
-  var characters =
+  let result = "";
+  const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
@@ -68,7 +68,7 @@ export const useSessionStore = defineStore("session", {
       }
       this.loading = false;
     },
-    async deleteSessions(id: String) {
+    async deleteSessions(id: string) {
       this.loading = true;
       try {
         await fetch("https://webrtc-session.paul-asvb.workers.dev/" + id, {
@@ -80,11 +80,11 @@ export const useSessionStore = defineStore("session", {
       }
       this.loading = false;
     },
-    useSession(session_id: String) {
-      console.log("use sessisons");
+    useSession(session_id: string) {
+      this.session_id = session_id;
       this.loadPeers(session_id);
     },
-    async loadPeers(session_id: String) {
+    async loadPeers(session_id: string) {
       this.loading = true;
       try {
         const peers = await fetch(
