@@ -7,7 +7,7 @@ export type Session = {
 
 export type Peer = {
   peer_id: String;
-  offer: RTCLocalSessionDescriptionInit;
+  offer: RTCSessionDescriptionInit;
 };
 
 export type RootState = {
