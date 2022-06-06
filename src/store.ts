@@ -1,19 +1,23 @@
 import { defineStore } from "pinia";
-import createWebRTC from "./rtc";
 
 export type Session = {
   name: string;
 };
 
+interface RTCSessionDescription {
+  sdp?: string;
+  type: RTCSdpType;
+}
+
 export type Peer = {
   peer_id: string;
-  offer: RTCSessionDescriptionInit;
+  offer: RTCSessionDescription;
 };
 
 export type RootState = {
   session_id: string;
   peer_id: string;
-  local_offer: RTCLocalSessionDescriptionInit;
+  local_offer: RTCSessionDescription | null;
   peer_conn: RTCPeerConnection;
   sessions: Session[];
   peers: Peer[];
@@ -48,7 +52,7 @@ export const useSessionStore = defineStore("session", {
     ({
       session_id: "ses" + ranNum(),
       peer_id: "p" + makeid(4),
-      local_offer: "",
+      local_offer: null,
       peer_conn: new RTCPeerConnection(config),
       sessions: [],
       peers: [],
