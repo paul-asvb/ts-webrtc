@@ -12,9 +12,13 @@ const session = useSessionStore();
     </tr>
     <tr v-for="peer in session.peers">
       <td>{{ peer.peer_id }}</td>
+      <td>{{ peer.offer.type }}</td>
       <td>
         <button type="button" @click="session.loadRemoteOffer(peer.offer)">
-          load as remote
+          load as remote offer
+        </button>
+        <button type="button" @click="session.loadRemoteOffer(peer.offer)">
+          load as remote answer
         </button>
       </td>
     </tr>

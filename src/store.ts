@@ -17,7 +17,7 @@ export type Peer = {
 export type RootState = {
   session_id: string;
   peer_id: string;
-  local_offer: RTCSessionDescription | null;
+  message: RTCSessionDescription | null;
   peer_conn: RTCPeerConnection;
   sessions: Session[];
   peers: Peer[];
@@ -50,9 +50,9 @@ const config = {
 export const useSessionStore = defineStore("session", {
   state: () =>
     ({
-      session_id: "ses" + ranNum(),
-      peer_id: "p" + makeid(4),
-      local_offer: null,
+      session_id: makeid(4),
+      peer_id: makeid(4),
+      message: null,
       peer_conn: new RTCPeerConnection(config),
       sessions: [],
       peers: [],
@@ -63,22 +63,31 @@ export const useSessionStore = defineStore("session", {
   },
   actions: {
     async createOffer() {
+      this.peer_conn.addEventListener("connectionstatechange", (e) => {
+        console.log("connectionstatechange", e);
+        //this.local_offer = this.peer_conn.localDescription;
+      });
       this.peer_conn.addEventListener("icecandidate", (e) => {
-        this.local_offer = this.peer_conn.localDescription;
+        console.log("icecandidate", e);
+        //this.local_offer = this.peer_conn.localDescription;
       });
 
       this.peer_conn.addEventListener("iceconnectionstatechange", (e) => {
         //onIceStateChan console.log(e);ge(peerConnection, e)
-        console.log(e);
+        console.log("iceconnectionstatechange", e);
       });
-      this.local_offer = await this.peer_conn.createOffer();
-      this.peer_conn.setLocalDescription(this.local_offer);
+      this.message = await this.peer_conn.createOffer();
+      this.peer_conn.setLocalDescription(this.message);
     },
     async loadRemoteOffer(offer: RTCSessionDescriptionInit) {
       await this.peer_conn.setRemoteDescription(offer);
-      this.local_offer = await this.peer_conn.createAnswer();
-      this.peer_conn.setLocalDescription(this.local_offer);
+      this.message = await this.peer_conn.createAnswer();
+      this.peer_conn.setLocalDescription(this.message);
     },
+    async loadRemoteAnswer(offer: RTCSessionDescriptionInit) {
+      await this.peer_conn.setRemoteDescription(offer);
+    },
+
     async loadSessions() {
       this.loading = true;
       try {

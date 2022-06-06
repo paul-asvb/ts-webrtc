@@ -2,15 +2,16 @@
 import { ref } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
-session.createOffer();
 const push_sessions = ref(false);
 
+async function createOffer() {
+  session.createOffer();
+}
 async function pushOffer() {
-  console.log(session);
   push_sessions.value = true;
   let s = {
     peer_id: session.peer_id,
-    offer: session.local_offer,
+    offer: session.message,
   };
   await fetch(
     "https://webrtc-session.paul-asvb.workers.dev/" + session.session_id,
@@ -25,7 +26,8 @@ async function pushOffer() {
 <template>
   <hr />
   <h3>local offer</h3>
-  <p>{{ JSON.stringify(session.local_offer) }}</p>
+  <p>{{ JSON.stringify(session.message) }}</p>
+  <button type="button" @click="createOffer">create offer</button>
   <button type="button" @click="pushOffer">
     {{ !push_sessions ? "push offer" : "🔄" }}
   </button>
