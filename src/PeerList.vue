@@ -17,7 +17,7 @@ const session = useSessionStore();
         <button type="button" @click="session.loadRemoteOffer(peer.offer)">
           load as remote offer
         </button>
-        <button type="button" @click="session.loadRemoteOffer(peer.offer)">
+        <button type="button" @click="session.loadRemoteAnswer(peer.offer)">
           load as remote answer
         </button>
       </td>

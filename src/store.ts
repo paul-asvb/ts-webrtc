@@ -65,19 +65,29 @@ export const useSessionStore = defineStore("session", {
     async createOffer() {
       this.peer_conn.addEventListener("connectionstatechange", (e) => {
         console.log("connectionstatechange", e);
-        //this.local_offer = this.peer_conn.localDescription;
       });
-      this.peer_conn.addEventListener("icecandidate", (e) => {
-        console.log("icecandidate", e);
-        //this.local_offer = this.peer_conn.localDescription;
-      });
+      this.peer_conn.addEventListener(
+        "icecandidate",
+        (e: RTCPeerConnectionIceEvent) => {
+          this.message = this.peer_conn.localDescription;
+        }
+      );
+
+      // console.log("icecandidate", e)
+      //this.message = this.peer_conn.localDescription;
+
+      const sendChannel = this.peer_conn.createDataChannel("sendChannel");
+      sendChannel.onmessage = (e) =>
+        console.log("messsage received!!!" + e.data);
+      sendChannel.onopen = (e) => console.log("open!!!!");
+      sendChannel.onclose = (e) => console.log("closed!!!!!!");
 
       this.peer_conn.addEventListener("iceconnectionstatechange", (e) => {
         //onIceStateChan console.log(e);ge(peerConnection, e)
         console.log("iceconnectionstatechange", e);
       });
       this.message = await this.peer_conn.createOffer();
-      this.peer_conn.setLocalDescription(this.message);
+      await this.peer_conn.setLocalDescription(this.message);
     },
     async loadRemoteOffer(offer: RTCSessionDescriptionInit) {
       await this.peer_conn.setRemoteDescription(offer);
