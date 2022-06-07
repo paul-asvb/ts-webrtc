@@ -3,7 +3,9 @@ import { useSessionStore } from "./store";
 import LocalOffer from "./LocalOffer.vue";
 import SessionList from "./SessionList.vue";
 import PeerList from "./PeerList.vue";
+import SendMessage from "./SendMessage.vue";
 const session = useSessionStore();
+session.createConnection();
 </script>
 <template>
   <main>
@@ -18,5 +20,6 @@ const session = useSessionStore();
     <LocalOffer />
     <SessionList />
     <PeerList v-if="session.peers.length > 0" />
+    <SendMessage />
   </main>
 </template>

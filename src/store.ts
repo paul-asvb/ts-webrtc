@@ -22,6 +22,8 @@ export type RootState = {
   sessions: Session[];
   peers: Peer[];
   loading: boolean;
+  send_channel: RTCDataChannel | null;
+  recieve_channel: RTCDataChannel | null;
 };
 
 function makeid(length: number) {
@@ -57,12 +59,14 @@ export const useSessionStore = defineStore("session", {
       sessions: [],
       peers: [],
       loading: false,
+      send_channel: null,
+      recieve_channel: null,
     } as RootState),
   getters: {
     id: (state) => state.session_id,
   },
   actions: {
-    async createOffer() {
+    async createConnection() {
       this.peer_conn.addEventListener("connectionstatechange", (e) => {
         console.log("connectionstatechange", e);
       });
@@ -73,19 +77,14 @@ export const useSessionStore = defineStore("session", {
         }
       );
 
-      // console.log("icecandidate", e)
-      //this.message = this.peer_conn.localDescription;
+      this.send_channel = this.peer_conn.createDataChannel("sendChannel");
+      this.send_channel.onmessage = (e) => console.log("channel message", e);
+      this.send_channel.onopen = (e) => console.log("channel open");
+      this.send_channel.onclose = (e) => console.log("channel closed");
 
-      const sendChannel = this.peer_conn.createDataChannel("sendChannel");
-      sendChannel.onmessage = (e) =>
-        console.log("messsage received!!!" + e.data);
-      sendChannel.onopen = (e) => console.log("open!!!!");
-      sendChannel.onclose = (e) => console.log("closed!!!!!!");
+      this.peer_conn.ondatachannel = (e: RTCDataChannelEvent) =>
+        this.onDataChannel(e.channel);
 
-      this.peer_conn.addEventListener("iceconnectionstatechange", (e) => {
-        //onIceStateChan console.log(e);ge(peerConnection, e)
-        console.log("iceconnectionstatechange", e);
-      });
       this.message = await this.peer_conn.createOffer();
       await this.peer_conn.setLocalDescription(this.message);
     },
@@ -97,7 +96,16 @@ export const useSessionStore = defineStore("session", {
     async loadRemoteAnswer(offer: RTCSessionDescriptionInit) {
       await this.peer_conn.setRemoteDescription(offer);
     },
-
+    onDataChannel(c: RTCDataChannel) {
+      this.recieve_channel = c;
+      this.recieve_channel.onmessage = (e) => console.log("channel message", e);
+      this.recieve_channel.onopen = (e) => console.log("channel open");
+      this.recieve_channel.onclose = (e) => console.log("channel closed");
+    },
+    sendMessage(s: string) {
+      console.log(s);
+      this.send_channel?.send(s);
+    },
     async loadSessions() {
       this.loading = true;
       try {

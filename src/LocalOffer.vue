@@ -4,9 +4,6 @@ import { useSessionStore } from "./store";
 const session = useSessionStore();
 const push_sessions = ref(false);
 
-async function createOffer() {
-  session.createOffer();
-}
 async function pushOffer() {
   push_sessions.value = true;
   let s = {
@@ -27,7 +24,6 @@ async function pushOffer() {
   <hr />
   <h3>local offer</h3>
   <p>{{ JSON.stringify(session.message) }}</p>
-  <button type="button" @click="createOffer">create offer</button>
   <button type="button" @click="pushOffer">
     {{ !push_sessions ? "push offer" : "🔄" }}
   </button>
