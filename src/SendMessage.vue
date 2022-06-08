@@ -8,4 +8,5 @@ let message = ref("");
   <hr />
   <input v-model="message" />
   <button type="button" @click="session.sendMessage(message)">send</button>
+  
 </template>
