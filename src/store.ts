@@ -51,17 +51,17 @@ const config = {
 
 export const useSessionStore = defineStore("session", {
   state: () =>
-    ({
-      session_id: makeid(4),
-      peer_id: makeid(4),
-      message: null,
-      peer_conn: new RTCPeerConnection(config),
-      sessions: [],
-      peers: [],
-      loading: false,
-      send_channel: null,
-      recieve_channel: null,
-    } as RootState),
+  ({
+    session_id: makeid(4),
+    peer_id: makeid(4),
+    message: null,
+    peer_conn: new RTCPeerConnection(config),
+    sessions: [],
+    peers: [],
+    loading: false,
+    send_channel: null,
+    recieve_channel: null,
+  } as RootState),
   getters: {
     id: (state) => state.session_id,
   },
@@ -145,5 +145,21 @@ export const useSessionStore = defineStore("session", {
       }
       this.loading = false;
     },
+    async pushOffer() {
+      this.loading = true;
+      let s = {
+        peer_id: this.peer_id,
+        offer: this.message,
+      };
+      await fetch(
+        "https://webrtc-session.paul-asvb.workers.dev/" + this.session_id,
+        {
+          method: "POST",
+          body: JSON.stringify(s),
+        }
+      ).catch(console.log);
+      this.loadSessions();
+      this.loading = false;
+    }
   },
 });

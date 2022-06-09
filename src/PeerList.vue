@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import { useSessionStore } from "./store";
 const session = useSessionStore();
 </script>
